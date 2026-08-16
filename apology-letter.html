@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>致饼饼公主</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg1:#fdeef4;
+    --bg2:#f6e7f5;
+    --bg3:#fef6ec;
+    --paper:#fffdfb;
+    --ink:#7a6370;
+    --ink-soft:#9a8392;
+    --gold:#d9b88f;
+    --pink:#f3c6d6;
+    --rose:#e8a9c0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html,body{height:100%;}
+  body{
+    font-family:"Noto Serif SC","Songti SC","STSong","SimSun",serif;
+    background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+    background-size:220% 220%;
+    animation:bgShift 20s ease infinite;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    color:var(--ink);
+    position:relative;
+    -webkit-font-smoothing:antialiased;
+  }
+  @keyframes bgShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+
+  /* 花瓣层 */
+  .petals{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden;}
+  .petal{position:absolute;top:-48px;will-change:transform,opacity;
+    animation:fall linear forwards;}
+  @keyframes fall{
+    0%{transform:translateY(-10vh) rotate(0deg);opacity:0;}
+    10%{opacity:.9;}
+    100%{transform:translateY(112vh) rotate(420deg);opacity:0;}
+  }
+
+  /* 封面信封 */
+  .cover{
+    position:relative;z-index:2;
+    text-align:center;
+    padding:40px;
+    transition:opacity .9s ease, transform .9s ease;
+  }
+  .cover.hide{opacity:0;transform:scale(.92);pointer-events:none;}
+  .envelope{width:150px;height:104px;margin:0 auto 26px;display:block;
+    filter:drop-shadow(0 10px 22px rgba(214,160,190,.35));}
+  .cover h1{
+    font-weight:500;font-size:28px;letter-spacing:3px;color:#8a6d7f;
+    margin-bottom:14px;
+  }
+  .cover p{color:var(--ink-soft);font-size:15px;letter-spacing:1px;margin-bottom:30px;}
+  .open-btn{
+    font-family:inherit;cursor:pointer;
+    border:1px solid var(--rose);
+    background:rgba(255,255,255,.55);
+    color:#a06b86;
+    padding:13px 34px;border-radius:40px;
+    font-size:15px;letter-spacing:4px;
+    transition:all .35s ease;
+    box-shadow:0 6px 18px rgba(232,169,192,.25);
+  }
+  .open-btn:hover{background:#fff;transform:translateY(-2px);
+    box-shadow:0 10px 24px rgba(232,169,192,.4);}
+
+  /* 信纸 */
+  .letter{
+    position:relative;z-index:2;
+    width:min(560px,90vw);
+    max-height:92vh;overflow-y:auto;
+    background:var(--paper);
+    border-radius:18px;
+    padding:54px 48px 46px;
+    box-shadow:0 24px 60px rgba(180,140,165,.30);
+    border:1px solid #f3e3ec;
+    opacity:0;transform:translateY(28px) scale(.98);
+    transition:opacity 1s ease, transform 1s ease;
+    pointer-events:none;
+  }
+  .letter.show{opacity:1;transform:none;pointer-events:auto;}
+  .letter::-webkit-scrollbar{width:6px;}
+  .letter::-webkit-scrollbar-thumb{background:#ecd3df;border-radius:6px;}
+
+  .crown{display:block;width:56px;height:36px;margin:0 auto 22px;
+    filter:drop-shadow(0 3px 6px rgba(217,184,143,.4));}
+  .date{text-align:right;color:var(--ink-soft);font-size:13px;letter-spacing:1px;
+    margin-bottom:18px;}
+  .letter h2{font-weight:500;font-size:22px;color:#8a6d7f;margin-bottom:22px;
+    letter-spacing:2px;}
+  .para{font-size:16px;line-height:2.1;color:var(--ink);margin-bottom:18px;
+    text-align:justify;font-weight:300;}
+  .hl{color:#c98aa6;font-weight:500;}
+  .sign{text-align:right;margin-top:26px;color:#9a7f8e;font-size:15px;
+    letter-spacing:1px;}
+  .ps{margin-top:14px;color:var(--ink-soft);font-size:14px;font-style:italic;
+    text-align:right;letter-spacing:.5px;}
+
+  /* 逐段淡入 */
+  .letter.show .crown,
+  .letter.show .date,
+  .letter.show h2,
+  .letter.show .para,
+  .letter.show .sign,
+  .letter.show .ps{
+    animation:fadeUp 1s ease both;
+  }
+  .letter.show .crown{animation-delay:.15s;}
+  .letter.show .date{animation-delay:.3s;}
+  .letter.show h2{animation-delay:.45s;}
+  .letter.show .para:nth-of-type(1){animation-delay:.5s;}
+  .letter.show .para:nth-of-type(2){animation-delay:.68s;}
+  .letter.show .para:nth-of-type(3){animation-delay:.86s;}
+  .letter.show .para:nth-of-type(4){animation-delay:1.04s;}
+  .letter.show .para:nth-of-type(5){animation-delay:1.22s;}
+  .letter.show .para:nth-of-type(6){animation-delay:1.40s;}
+  .letter.show .para:nth-of-type(7){animation-delay:1.58s;}
+  .letter.show .para:nth-of-type(8){animation-delay:1.76s;}
+  .letter.show .para:nth-of-type(9){animation-delay:1.94s;}
+  .letter.show .para:nth-of-type(10){animation-delay:2.12s;}
+  .letter.show .para:nth-of-type(11){animation-delay:2.30s;}
+  .letter.show .para:nth-of-type(12){animation-delay:2.48s;}
+  .letter.show .sign{animation-delay:2.1s;}
+  .letter.show .ps{animation-delay:2.3s;}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(18px);}to{opacity:1;transform:none;}}
+
+  /* 音乐条 */
+  .music-bar{
+    position:fixed;left:18px;bottom:18px;z-index:5;
+    display:flex;align-items:center;gap:10px;
+    background:rgba(255,253,251,.78);
+    backdrop-filter:blur(6px);
+    border:1px solid #f0dce7;
+    border-radius:40px;
+    padding:8px 16px 8px 8px;
+    box-shadow:0 8px 22px rgba(200,160,185,.25);
+    opacity:0;transform:translateY(14px);
+    transition:opacity .8s ease, transform .8s ease;
+    pointer-events:none;
+  }
+  .music-bar.show{opacity:1;transform:none;pointer-events:auto;}
+  .music-toggle{
+    width:38px;height:38px;border-radius:50%;
+    border:none;cursor:pointer;flex:0 0 auto;
+    background:linear-gradient(135deg,#f6c6d9,#e8a9c0);
+    color:#fff;font-size:16px;
+    display:flex;align-items:center;justify-content:center;
+    box-shadow:0 4px 10px rgba(232,169,192,.4);
+    transition:transform .3s ease;
+  }
+  .music-toggle:hover{transform:scale(1.07);}
+  .music-meta{font-size:12.5px;color:#a07e8f;line-height:1.25;max-width:160px;}
+  .music-meta b{color:#9a6b86;font-weight:500;}
+  .music-meta span{display:block;color:#bba1af;font-size:11px;}
+  .music-link{color:#c98aa6;text-decoration:none;font-size:11px;border-bottom:1px dashed #e3b6c8;}
+  .music-link:hover{color:#a06b86;}
+  .note-anim{display:inline-flex;gap:2px;align-items:flex-end;height:12px;margin-left:4px;vertical-align:middle;}
+  .note-anim i{width:2.5px;background:#d9a9bf;border-radius:2px;height:4px;animation:eq 1s ease-in-out infinite;}
+  .note-anim i:nth-child(2){animation-delay:.2s;}
+  .note-anim i:nth-child(3){animation-delay:.4s;}
+  .note-anim i:nth-child(4){animation-delay:.6s;}
+  @keyframes eq{0%,100%{height:4px;}50%{height:12px;}}
+
+  /* 移动端适配 */
+  @media (max-width:600px){
+    .cover{padding:30px 18px;}
+    .cover h1{font-size:22px;letter-spacing:2px;}
+    .cover p{font-size:14px;}
+    .open-btn{padding:12px 28px;font-size:14px;letter-spacing:3px;}
+    .envelope{width:122px;height:86px;}
+    .letter{width:92vw;max-height:88vh;padding:40px 22px 34px;border-radius:14px;}
+    .crown{width:48px;height:31px;margin-bottom:16px;}
+    .letter h2{font-size:19px;margin-bottom:18px;}
+    .para{font-size:15px;line-height:2.0;margin-bottom:15px;}
+    .date{font-size:12px;}
+    .sign{font-size:14px;}
+    .ps{font-size:13px;}
+    .music-bar{left:12px;right:12px;bottom:12px;padding:7px 14px 7px 7px;gap:8px;}
+    .music-meta{max-width:calc(100vw - 150px);}
+    .music-meta b{font-size:12px;}
+    .music-meta span{font-size:10px;}
+  }
+  @media (max-width:380px){
+    .letter{padding:34px 18px 30px;}
+    .para{font-size:14.5px;}
+  }
+  /* 防止移动端长按选中/双击缩放干扰 */
+  body{-webkit-tap-highlight-color:transparent;}
+  .open-btn,.music-toggle{touch-action:manipulation;}
+</style>
+</head>
+<body>
+
+<div class="petals" id="petals"></div>
+
+<!-- 封面 -->
+<div class="cover" id="cover">
+  <svg class="envelope" viewBox="0 0 200 140">
+    <rect x="12" y="22" width="176" height="98" rx="12" fill="#fffdfb" stroke="#ecc6d8" stroke-width="2"/>
+    <path d="M12 34 L100 92 L188 34" fill="none" stroke="#e8a9c0" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="100" cy="96" r="11" fill="#d9b88f"/>
+    <path d="M93 96 l5 -7 l5 7 z" fill="#fffdfb"/>
+  </svg>
+  <h1>致 饼饼公主</h1>
+  <p>我写了一封信，想请你轻轻打开</p>
+  <button class="open-btn" id="openBtn">轻 触 展 开</button>
+</div>
+
+<!-- 信纸 -->
+<div class="letter" id="letter">
+  <svg class="crown" viewBox="0 0 64 42">
+    <path d="M6 36 L10 13 L22 25 L32 8 L42 25 L54 13 L58 36 Z" fill="none" stroke="#d9b88f" stroke-width="2" stroke-linejoin="round"/>
+    <circle cx="10" cy="13" r="2.6" fill="#f3c6d6"/>
+    <circle cx="32" cy="8" r="2.6" fill="#f3c6d6"/>
+    <circle cx="54" cy="13" r="2.6" fill="#f3c6d6"/>
+    <line x1="6" y1="39" x2="58" y2="39" stroke="#d9b88f" stroke-width="2" stroke-linecap="round"/>
+  </svg>
+
+  <p class="date" id="date"></p>
+  <h2>致 饼饼公主：</h2>
+
+  <p class="para">哈喽，饼饼公主。很高兴能在茫茫互联网上认识你——一个活泼、开朗又有趣的小姑娘，做起事来还特别细心。今天是我们相识的第 <span class="hl">243 天</span>，借着这封道歉信，我想把心里话一并说给你听。如果里面有让你看了不舒服、烦躁的地方，一定要告诉我，我会立刻修改，直到给你一封最满意的道歉信。</p>
+
+  <p class="para">这封信我不想拖到第二天才给你。吵架不隔夜，今日事今日毕——但我愿意一直反思下去，直到得到你的原谅。我们前期交流不多，真正开始联系是 8 月 7 日，认真相处只有这 10 天。可就是这 10 天里，有开心、有愉悦，而从始至终，你都是我<span class="hl">最最最重要的好朋友</span>；我也看得出你对我的付出，因为我是你最最最重要的男性朋友。</p>
+
+  <p class="para">我大大咧咧惯了，有时候只顾着自己高兴，忘了体察你的心思。这不能当借口——你的失落是真真切切的，是我没有好好待你。男生和男生之间，对玩笑的边界感没那么强，可这不适用于男生和女生之间。这时候的女孩子，更希望被理解、被关爱、被在乎，可以有更多时间去做自己喜欢的事——不是相互耽误，而是共同成长。</p>
+
+  <p class="para">我好几次惹你生气，你明明最在乎体重，我却偏偏拿你<span class="hl">最在意的事</span>开玩笑。我越想越不对：我知道你为了身材，忍过多少想吃的念头、流过多少汗，减肥本就是一条很痛苦的路。你的每一分努力都值得被好好珍惜，而不是被我一句轻飘飘的话否定掉。话出口我就后悔了——说出去的话像泼出去的水，收不回来。那句话既没尊重你的努力，又正好戳在你最在意的地方，我没资格拿这个开玩笑，真的抱歉，也踩到了你的雷点。</p>
+
+  <p class="para">你在我心里，从来不是可以随意调侃的人，而是一个<span class="hl">值得被温柔捧着</span>的女孩。这次是我没做到，我真心向你道歉。我不知道你会不会原谅我，但你的事，我会一直放在心上。你在我心里一直是公主的样子，我以前觉得"知道就行"，现在才明白，光心里知道不够，得好好待你。</p>
+
+  <p class="para">这 10 天里我们吵了好几次，基本上都是我占有欲太强。你有自己的时间规划，要做自己喜欢的事，我的打扰确实过度了。说句心底话：我最最最害怕失去的就是你。你是一个超级好的人，会的本领也很多，是合格的老师、也是护士。听了你的经历，我更觉得你特优秀。可我这一次的不理解、不尊重，造成了让你特别难受的结果，我真的很自责。</p>
+
+  <p class="para">你对我的好，我全记在心里。我嘴笨，但这 10 天短暂又珍贵，你带给我的全是欢乐，最后却给你添了许多麻烦。我直到这次犯错才明白，男生和女生相处真的不一样。我对你的情绪注重得太少——作为天天跟你说话的人，我本该及时止住让你不开心的行为，遇到你不感兴趣的话题主动跳过。你很会照顾我的小情绪，也愿意耐心听我讲，还那么尊重我。我想了想：越会照顾人的人，其实越渴望被反过来照顾一下。我的细节确实还不到位，我会改。</p>
+
+  <p class="para">不过将来相处，我还有个毛病得先跟你坦白：我记性不太好，忙起来容易一时把事忘掉，可能也会因此惹麻烦。万一发生了，希望你还能给我一个改过的机会。现在的我也许还不完美，但我会朝完美看齐，不让你伤心——因为你是我心里的 princess，我们互为唯一的异性朋友，这个分量的轻重，我懂。</p>
+
+  <p class="para">细节这块我积累得慢，希望你能多给我一点时间，让我把"细节库"一点点补上。我也在学着更细心地听你说话，想给你留个好印象。不知道我们能相处多久，但我希望，只要还在一起，你每天都是快快乐乐的。我记得你的喜好和不喜好，目前还只是初级阶段：你不爱吃葱、姜、蒜、芹菜、香菜、腊鱼、腊肉、豆芽；水果里菠萝、凤梨会过敏、百香果也不爱吃；米饭也吃得少。你爱护肤，会涂水乳，脱毛不喜欢身上有毛影响穿搭；口红喜欢粉色、灰粉色、灰白色，色号我还得再研究。你近视约 500 度、平时戴美瞳，要保护好眼睛。我对你的了解还是太浅，希望有机会能更多地懂你。</p>
+
+  <p class="para">我对你许过的承诺，一直牢记在心里。你这段时间的照顾，我想在往后的相处里加倍还给你——给我一个兑现的机会，我会一直在，不画饼，而是用行动去学更多本事，给你做符合饼饼体质的好吃的菜。全中国 14 亿人，说心里话，认识你真的不容易。只要你需要，我这个好朋友一直都在，真真切切地陪你感受喜怒哀乐。</p>
+
+  <p class="para">我平时说话或许有些过头，不知道将来我们会认识多久、变成什么关系。但只要还在联系，我就会照顾好你。我身上毛病不少，愿意被你挑刺、被你纠正——换成陌生人，谁会管我呢？有你愿意点出来，说明我多幸运能认识你这么好的朋友。只要我们每多认识一天，你就多拥有我这一天的陪伴。因为你永远是我的公主，公主，就该被温柔对待。如果你愿意，我想用往后的细心，把这次的冒犯一点点补回来。你的事，我永远放在心上。</p>
+
+  <p class="sign">—— 永远愿意陪在你身边的臣子</p>
+  <p class="ps">愿这封信，能换你一个轻轻的笑。</p>
+</div>
+
+<!-- 音乐条 -->
+<div class="music-bar" id="musicBar">
+  <button class="music-toggle" id="musicToggle" title="播放/暂停">♪</button>
+  <div class="music-meta">
+    <b>背景音乐<span class="note-anim" id="eq"><i></i><i></i><i></i><i></i></span></b>
+    <span>循环播放 · 轻触可暂停</span>
+  </div>
+</div>
+
+<!-- 本地背景音乐（来自你提供的视频，循环播放） -->
+<audio id="bgm" src="bgm.m4a" loop preload="auto"></audio>
+
+<script>
+  // 飘落的花瓣与星光
+  const petalBox = document.getElementById('petals');
+  const symbols = ['🌸','🌷','💮','✨','🌼'];
+  function spawnPetal(){
+    const p = document.createElement('div');
+    p.className = 'petal';
+    p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.fontSize = (13 + Math.random()*16) + 'px';
+    const dur = 7 + Math.random()*6;
+    p.style.animationDuration = dur + 's';
+    petalBox.appendChild(p);
+    setTimeout(()=>p.remove(), dur*1000);
+  }
+  setInterval(spawnPetal, 550);
+  for(let i=0;i<8;i++) setTimeout(spawnPetal, i*300);
+
+  // 日期
+  const now = new Date();
+  const pad = n => n.toString().padStart(2,'0');
+  document.getElementById('date').textContent =
+    `写于 ${now.getFullYear()} 年 ${pad(now.getMonth()+1)} 月 ${pad(now.getDate())} 日`;
+
+  // 展开信
+  document.getElementById('openBtn').addEventListener('click', ()=>{
+    document.getElementById('cover').classList.add('hide');
+    const letter = document.getElementById('letter');
+    letter.classList.add('show');
+    letter.scrollTop = 0;
+    // 展开后显示音乐条并播放背景音乐（循环）
+    setTimeout(()=>{
+      document.getElementById('musicBar').classList.add('show');
+      const bgm = document.getElementById('bgm');
+      bgm.play().catch(()=>{}); // 浏览器需用户手势触发，点击已满足
+    }, 1600);
+  });
+
+  // 音乐开关（循环播放，控制暂停/继续）
+  const eq = document.getElementById('eq');
+  let musicOn = true;
+  const bgm = document.getElementById('bgm');
+  document.getElementById('musicToggle').addEventListener('click', ()=>{
+    musicOn = !musicOn;
+    eq.style.display = musicOn ? 'inline-flex' : 'none';
+    document.getElementById('musicToggle').textContent = musicOn ? '♪' : '⏸';
+    if(musicOn){ bgm.play().catch(()=>{}); }
+    else { bgm.pause(); }
+  });
+</script>
+</body>
+</html>
